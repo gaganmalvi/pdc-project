@@ -7,7 +7,7 @@
 
 #define MSG_LEN 100000
 #define VIEW_MESSAGE 0
-#define NUM_THREADS 4
+#define NUM_THREADS 8
 
 /**
  * @brief Euclid's algorithm to find the greatest common divisor of two integers
@@ -42,7 +42,6 @@ int public_key(int totient) {
  * @brief Generate private key
  */
 int private_key(int totient, int e) {
-    int z = 0;
     int d = 0;
     for (int z = 1; z < totient; z++) {
         if (((z * totient) + 1) % e == 0) {
@@ -60,7 +59,7 @@ void encrypt(int e, int n, char message[], int encrypted[]) {
     int i = 0;
     int cipher = 1;
     int len = strlen(message);
-#pragma omp parallel for private (i, cipher) shared (message, n)
+#pragma omp parallel for private (i, cipher) shared (message, n) num_threads(NUM_THREADS)
     for (i = 0; i < len; i++) {
         for (int j = 1; j <= e; j++) {
             cipher = (cipher * message[i]) % n;
@@ -77,9 +76,9 @@ void decrypt(int d, int n, char message[], int encrypted[], int decrypted[]) {
     int i = 0;
     int j = 0;
     int plain = 1;
-#pragma omp parallel for lastprivate (i, plain) shared (encrypted, n)
+#pragma omp parallel for lastprivate (i, plain) shared (encrypted, n) num_threads(NUM_THREADS)
     for (i = 0; i < strlen(message); i++) {
-        #pragma omp parallel for lastprivate (j) shared (encrypted, n, plain)
+        #pragma omp parallel for lastprivate (j) shared (encrypted, n, plain) num_threads(NUM_THREADS)
         for (j = 1; j <= d; j++) {
             plain = (plain * encrypted[i]) % n;
         }

@@ -40,7 +40,6 @@ int public_key(int totient) {
  * @brief Generate private key
  */
 int private_key(int totient, int e) {
-    int z = 0;
     int d = 0;
     for (int z = 1; z < totient; z++) {
         if (((z * totient) + 1) % e == 0) {

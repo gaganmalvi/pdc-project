@@ -15,18 +15,7 @@ X86_64_V3_CFLAGS += \
 EXTRA_CFLAGS := \
 	-O3 \
 	-Wall \
-	-Wextra \
-	-Wpedantic \
-	-Werror \
-	-Wno-unused-parameter \
-	-Wno-unused-variable \
-	-Wno-unused-function \
-	-Wno-unused-label \
-	-Wno-unused-value \
-	-Wno-unused-result \
-	-Wno-unused-but-set-variable \
-	-Wno-missing-field-initializers \
-	-Wno-missing-braces
+	-Werror
 
 all:
 	for program in $(PROGRAMS); do \

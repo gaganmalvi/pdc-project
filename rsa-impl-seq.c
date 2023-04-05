@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <omp.h>
+#include <sys/time.h>
 
 #define MSG_LEN 100000
 #define VIEW_MESSAGE 0
@@ -97,6 +97,8 @@ int main(int argc, char *argv[]) {
     int encrypted[MSG_LEN];
     int decrypted[MSG_LEN];
 
+    struct timeval start, end;
+
     FILE *fp = fopen("data.txt", "r");
     if (fp == NULL) {
         printf("[!] Error opening file");
@@ -104,10 +106,10 @@ int main(int argc, char *argv[]) {
     while(fgets(message, sizeof(message), fp) != NULL);
     fclose(fp);
 
-    double start = omp_get_wtime();
+    gettimeofday(&start, NULL);
     encrypt(e, n, message, encrypted);
     decrypt(d, n, message, encrypted, decrypted);
-    double end = omp_get_wtime();
+    gettimeofday(&end, NULL);
 
     printf("Public key: %d\n", e);
     printf("Private key: %d\n", d);
@@ -119,7 +121,8 @@ int main(int argc, char *argv[]) {
     printf("Decrypted message: ");
     for (int i = 0; i < strlen(message); i++) printf("%c", decrypted[i]);
 #endif
-    printf("Time taken: %f seconds.\n", end - start);
+    double exec_time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+    printf("Time taken: %f seconds.\n", exec_time);
 
     return 0;
 }

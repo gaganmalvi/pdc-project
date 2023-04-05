@@ -7,6 +7,7 @@
 
 #define MSG_LEN 100000
 #define VIEW_MESSAGE 0
+#define NUM_THREADS 4
 
 /**
  * @brief Euclid's algorithm to find the greatest common divisor of two integers
@@ -59,7 +60,7 @@ void encrypt(int e, int n, char message[], int encrypted[]) {
     int i = 0;
     int cipher = 1;
     int len = strlen(message);
-#pragma omp parallel for private (i, cipher) shared (message, n)  schedule(dynamic, 1)
+#pragma omp parallel for private (i, cipher) shared (message, n)
     for (i = 0; i < len; i++) {
         for (int j = 1; j <= e; j++) {
             cipher = (cipher * message[i]) % n;

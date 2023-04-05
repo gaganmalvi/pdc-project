@@ -4,7 +4,8 @@
 #include <string.h>
 #include <omp.h>
 
-#define MSG_LEN 1500
+#define MSG_LEN 100000
+#define VIEW_MESSAGE 0
 
 /**
  * @brief Euclid's algorithm to find the greatest common divisor of two integers
@@ -110,14 +111,15 @@ int main(int argc, char *argv[]) {
 
     printf("Public key: %d\n", e);
     printf("Private key: %d\n", d);
+#if VIEW_MESSAGE
     printf("Original message: %s\n", message);
     printf("Encrypted message: ");
     for (int i = 0; i < strlen(message); i++) printf("%c", encrypted[i]);
     printf("\n");
     printf("Decrypted message: ");
     for (int i = 0; i < strlen(message); i++) printf("%c", decrypted[i]);
-
-    printf("\nTime taken: %f seconds.", end - start);
+#endif
+    printf("Time taken: %f seconds.\n", end - start);
 
     return 0;
 }

@@ -21,50 +21,50 @@ int main(int argc, char* argv[]) {
 
     size_t numblocks = filesize / sizeof(uint32_t);
 
-    printf("File size = %zu bytes, numblocks = %zu\n", filesize, numblocks / 2);
+    printf("[BLOWFISH] INFO: File size = %zu bytes, numblocks = %zu\n", filesize, numblocks / 2);
 
     // Encryption key
 
     char* key = "TESTKEY";
 
-    printf("Key = %s, length = %zu\n", key, strlen(key));
+    printf("[BLOWFISH] INFO: Key = %s, length = %zu\n", key, strlen(key));
 
     // Create Blowfish context
 
     blowfish_context_t* context = malloc(sizeof(blowfish_context_t));
 
     if (!context) {
-        printf("Could not allocate enough memory!\n");
+        printf("[BLOWFISH] ERR: Could not allocate enough memory!\n");
         return -1;
     }
 
     // Initialize key schedule
     status = blowfish_init(context, key, strlen(key));
     if (status) {
-        printf("Error initiating key\n");
+        printf("[BLOWFISH] ERR: Error initiating key\n");
         return -1;
     } else {
-        printf("Key schedule complete!\n");
+        printf("[BLOWFISH] INFO: Key schedule complete!\n");
     }
 
     // Hash original file
     hash_original = hash(file, numblocks);
 
-    printf("Original hash = %llx\n", (unsigned long long)hash_original);
+    printf("[BLOWFISH] DBG: Original hash = %llx\n", (unsigned long long)hash_original);
     f1 = fopen("data.txt", "r");
 
     //__________ENCRYPTION__________
 
-    printf("Encryption starts...\n");
+    printf("[BLOWFISH] INFO: Encryption begins\n");
 
     blowfish_encryptptr(context, file, numblocks, &runtime, &rate);
 
     hash_encrypted = hash(file, numblocks);
 
-    printf("Encryption done!\n");
-    printf("Time taken: %lf milliseconds\n", runtime * 1e3);
-    printf("Average speed: %lf MB/s\n", rate / MEGABYTE);
-    printf("Encrypted hash = %llx\n", (unsigned long long)hash_encrypted);
+    printf("[BLOWFISH] INFO: Encryption success\n");
+    printf("[BLOWFISH] INFO: Time taken: %lf milliseconds\n", runtime * 1e3);
+    printf("[BLOWFISH] INFO: Average speed: %lf MB/s\n", rate / MEGABYTE);
+    printf("[BLOWFISH] INFO: Encrypted hash = %llx\n", (unsigned long long)hash_encrypted);
     fptr = fopen("encrypted.txt", "w");
     char b[100];
     sprintf(b, "%" PRIu64, hash_encrypted);

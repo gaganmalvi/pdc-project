@@ -125,7 +125,7 @@ int main() {
     struct timeval start, end;
     char keystr[MAX_LEN];
 
-    FILE *fp = fopen("data.txt", "r");
+    FILE* fp = fopen("data.txt", "r");
     if (fp == NULL) printf("[RC5] ERR: Failed to open data.txt");
     while (fgets(keystr, sizeof(keystr), fp) != NULL)
         ;

@@ -1,8 +1,8 @@
-#include "inc/blowfish.h"
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include "inc/blowfish.h"
 #include "inc/const.h"
 #include "inc/impl.h"
 

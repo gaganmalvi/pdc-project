@@ -53,7 +53,7 @@ void* readfile(size_t* size, char* filepath) {
         filesize = (filesize / sizeof(uint32_t) + 1) * sizeof(uint32_t);
     }
     // Read file into buffer
-    char* buffer = (char* ) malloc(sizeof(char) * filesize);
+    char* buffer = (char*)malloc(sizeof(char) * filesize);
     memset(buffer, 0, sizeof(char) * filesize);
     size_t bytes_read = fread(buffer, sizeof(char), filesize, input);
     fclose(input);

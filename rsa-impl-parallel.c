@@ -1,8 +1,8 @@
+#include <math.h>
+#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
-#include <omp.h>
 #include <sys/time.h>
 
 #define MSG_LEN 100000
@@ -14,7 +14,7 @@
  */
 int gcd(int a, int b) {
     int tmp = 0;
-    while(b) {
+    while (b) {
         tmp = a;
         a = b;
         b = tmp % b;
@@ -59,7 +59,7 @@ void encrypt(int e, int n, char message[], int encrypted[]) {
     int i = 0;
     int cipher = 1;
     int len = strlen(message);
-#pragma omp parallel for private (i, cipher) shared (message, n) num_threads(NUM_THREADS)
+#pragma omp parallel for private(i, cipher) shared(message, n) num_threads(NUM_THREADS)
     for (i = 0; i < len; i++) {
         for (int j = 1; j <= e; j++) {
             cipher = (cipher * message[i]) % n;
@@ -76,9 +76,9 @@ void decrypt(int d, int n, char message[], int encrypted[], int decrypted[]) {
     int i = 0;
     int j = 0;
     int plain = 1;
-#pragma omp parallel for lastprivate (i, plain) shared (encrypted, n) num_threads(NUM_THREADS)
+#pragma omp parallel for lastprivate(i, plain) shared(encrypted, n) num_threads(NUM_THREADS)
     for (i = 0; i < strlen(message); i++) {
-        #pragma omp parallel for lastprivate (j) shared (encrypted, n, plain) num_threads(NUM_THREADS)
+#pragma omp parallel for lastprivate(j) shared(encrypted, n, plain) num_threads(NUM_THREADS)
         for (j = 1; j <= d; j++) {
             plain = (plain * encrypted[i]) % n;
         }
@@ -90,7 +90,7 @@ void decrypt(int d, int n, char message[], int encrypted[], int decrypted[]) {
 /**
  * @brief Driver code.
  */
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     int p = 157;
     int q = 151;
 
@@ -105,11 +105,12 @@ int main(int argc, char *argv[]) {
 
     struct timeval start, end;
 
-    FILE *fp = fopen("data.txt", "r");
+    FILE* fp = fopen("data.txt", "r");
     if (fp == NULL) {
         printf("[!] Error opening file");
     }
-    while(fgets(message, sizeof(message), fp) != NULL);
+    while (fgets(message, sizeof(message), fp) != NULL)
+        ;
     fclose(fp);
 
     gettimeofday(&start, NULL);

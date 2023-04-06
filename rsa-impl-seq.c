@@ -1,6 +1,6 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
 #include <sys/time.h>
 
@@ -12,7 +12,7 @@
  */
 int gcd(int a, int b) {
     int tmp = 0;
-    while(b) {
+    while (b) {
         tmp = a;
         a = b;
         b = tmp % b;
@@ -83,7 +83,7 @@ void decrypt(int d, int n, char message[], int encrypted[], int decrypted[]) {
 /**
  * @brief Driver code.
  */
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     int p = 157;
     int q = 151;
 
@@ -98,11 +98,12 @@ int main(int argc, char *argv[]) {
 
     struct timeval start, end;
 
-    FILE *fp = fopen("data.txt", "r");
+    FILE* fp = fopen("data.txt", "r");
     if (fp == NULL) {
         printf("[!] Error opening file");
     }
-    while(fgets(message, sizeof(message), fp) != NULL);
+    while (fgets(message, sizeof(message), fp) != NULL)
+        ;
     fclose(fp);
 
     gettimeofday(&start, NULL);

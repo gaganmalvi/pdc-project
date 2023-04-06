@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-#define KEYSIZE 16 /* size of key, in bytes */
+#define KEYSIZE 32 /* size of key, in bytes */
 #define MAX_LEN 100000
 typedef unsigned int WORD; /* Should be 32-bit = 4 bytes        */
 
@@ -118,14 +118,20 @@ void setup() /* secret input key K[0...KEYSIZE-1]   */
 } /* setup */
 
 /* Testbench */
-void main() {
+int main() {
     WORD i, j;
     WORD PlainText1[2], PlainText2[2];
     WORD CryptoText[2] = {0, 0};
     struct timeval start, end;
-    char* keystr = "Lorem ipsum dolor sit amet";
+    char keystr[MAX_LEN];
 
-    if (sizeof(WORD) != 4) printf("[RC5] error: WORD has %d bytes.\n", sizeof(WORD));
+    FILE *fp = fopen("data.txt", "r");
+    if (fp == NULL) printf("[RC5] ERR: Failed to open data.txt");
+    while (fgets(keystr, sizeof(keystr), fp) != NULL)
+        ;
+    fclose(fp);
+
+    if (sizeof(WORD) != 4) printf("[RC5] error: WORD has %ld bytes.\n", sizeof(WORD));
 
     printf("[RC5] INFO: RC5-32/12/16 examples:\n");
     for (i = 1; i < 6; i++) {
@@ -138,7 +144,7 @@ void main() {
         decrypt(CryptoText, PlainText2);
 
         /* Print out results, checking for decryption failure */
-        printf("[RC5] DBG: plaintext %.8lX %.8lX  --->  ciphertext %.8lX %.8lX  \n", PlainText1[0],
+        printf("[RC5] DBG: plaintext %.8X %.8X  --->  ciphertext %.8X %.8X  \n", PlainText1[0],
                PlainText1[1], CryptoText[0], CryptoText[1]);
         if (PlainText1[0] != PlainText2[0] || PlainText1[1] != PlainText2[1])
             printf("[RC5] ERR: Decryption Error!");
@@ -148,4 +154,6 @@ void main() {
     gettimeofday(&end, NULL);
     double exec_time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
     printf("[RC5] INFO: Time taken for 100000 blocks:  %f \n", exec_time);
+
+    return 0;
 }

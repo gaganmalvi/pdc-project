@@ -3,3 +3,4 @@ binaries
 rsa-impl-seq
 rsa-impl-parallel
 rc5-impl-seq
+blowfish

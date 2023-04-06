@@ -56,12 +56,13 @@ int private_key(int totient, int e) {
  * @brief Encrypt a message.
  */
 void encrypt(int e, int n, char message[], int encrypted[]) {
-    int i = 0;
+    int i = 0, j = 0;
     int cipher = 1;
     int len = strlen(message);
 #pragma omp parallel for private(i, cipher) shared(message, n) num_threads(NUM_THREADS)
     for (i = 0; i < len; i++) {
-        for (int j = 1; j <= e; j++) {
+#pragma omp parallel for private(j) shared(message, n, cipher) num_threads(NUM_THREADS)
+        for (j = 1; j <= e; j++) {
             cipher = (cipher * message[i]) % n;
         }
         encrypted[i] = cipher;

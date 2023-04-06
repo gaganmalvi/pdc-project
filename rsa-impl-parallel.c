@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp = fopen("data.txt", "r");
     if (fp == NULL) {
-        printf("[!] Error opening file");
+        printf("[RSA] ERR: Error opening file");
     }
     while (fgets(message, sizeof(message), fp) != NULL)
         ;
@@ -118,18 +118,18 @@ int main(int argc, char* argv[]) {
     decrypt(d, n, message, encrypted, decrypted);
     gettimeofday(&end, NULL);
 
-    printf("Public key: %d\n", e);
-    printf("Private key: %d\n", d);
+    printf("[RSA] INFO: Public key: %d\n", e);
+    printf("[RSA] INFO: Private key: %d\n", d);
 #if VIEW_MESSAGE
-    printf("Original message: %s\n", message);
-    printf("Encrypted message: ");
+    printf("[RSA] DBG: Original message: %s\n", message);
+    printf("[RSA] DBG: Encrypted message: ");
     for (int i = 0; i < strlen(message); i++) printf("%c", encrypted[i]);
     printf("\n");
-    printf("Decrypted message: ");
+    printf("[RSA] DBG: Decrypted message: ");
     for (int i = 0; i < strlen(message); i++) printf("%c", decrypted[i]);
 #endif
     double exec_time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
-    printf("Time taken: %f seconds.\n", exec_time);
+    printf("[RSA] INFO: Time taken: %f seconds.\n", exec_time);
 
     return 0;
 }

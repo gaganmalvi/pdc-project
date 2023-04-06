@@ -13,7 +13,7 @@ X86_64_V3_CFLAGS += \
 	-march=x86-64-v3
 
 EXTRA_CFLAGS := \
-	-O3 \
+	-Ofast \
 	-Wall \
 	-Werror
 

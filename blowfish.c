@@ -53,8 +53,6 @@ int main(int argc, char* argv[]) {
     printf("[BLOWFISH] DBG: Original hash = %llx\n", (unsigned long long)hash_original);
     f1 = fopen("data.txt", "r");
 
-    //__________ENCRYPTION__________
-
     printf("[BLOWFISH] INFO: Encryption begins\n");
 
     blowfish_encryptptr(context, file, numblocks, &runtime, &rate);

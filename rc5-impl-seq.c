@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <sys/time.h>
 
+#include "inc/terminal.h"
+
 #define KEYSIZE 32 /* size of key, in bytes */
 #define MAX_LEN 100000
 typedef unsigned int WORD; /* Should be 32-bit = 4 bytes        */
@@ -54,7 +56,6 @@ void encrypt(WORD* PlainText, WORD* CryptoText) {
 
     A = PlainText[0] + Table[0];
     B = PlainText[1] + Table[1];
-
     for (i = 1; i <= NumRounds; i++) {
         temp = i << 1;
         A = ROT(A ^ B, B, ShiftLeft) + Table[temp];
@@ -72,7 +73,6 @@ void decrypt(WORD* CryptoText, WORD* PlainText) {
 
     B = CryptoText[1];
     A = CryptoText[0];
-
     for (i = NumRounds; i > 0; i--) {
         temp = i << 1;
         B = ROT(B - Table[temp + 1], A, ShiftRight) ^ A;
@@ -147,7 +147,7 @@ int main() {
         printf("[RC5] DBG: plaintext %.8X %.8X  --->  ciphertext %.8X %.8X  \n", PlainText1[0],
                PlainText1[1], CryptoText[0], CryptoText[1]);
         if (PlainText1[0] != PlainText2[0] || PlainText1[1] != PlainText2[1])
-            printf("[RC5] ERR: Decryption Error!");
+            printf("[RC5] ERR: Decryption Error!\n");
     }
     gettimeofday(&start, NULL);
     for (i = 1; i < MAX_LEN; i++) encrypt(CryptoText, CryptoText);
